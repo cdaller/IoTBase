@@ -115,7 +115,8 @@ bool IoTBase::begin() {
 
 
     // WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
-    WiFiManager wifiManager;
+    // need to have it in class, to be able to process requests to web portal
+    //WiFiManager wifiManager;
 
     // forward parameters to WifiManager
     for(auto &param : _parameters) {
@@ -127,6 +128,13 @@ bool IoTBase::begin() {
 
     // set config save notify callback
     wifiManager.setSaveConfigCallback(_saveWifiManagerConfigCallback);
+
+    // do not block on config portal
+    wifiManager.setConfigPortalBlocking(false);
+
+    // set menu (split wifi and params)
+    std::vector<const char *> menu = {"wifi","param","sep","info","sep","restart","exit"};
+    wifiManager.setMenu(menu);
 
 	// preferences.begin("iotbase", true);
     // DEBUG_PRINTF("WIFI Configured: %s", preferences.getBool(PREF_WIFI_CONFIGURED) ? "true" : "false");
@@ -153,6 +161,8 @@ bool IoTBase::begin() {
 
     //if you get here you have connected to the WiFi
     DEBUG_PRINTLN("connected...yeey :)");
+    wifiManager.startWebPortal();
+
     
     updateConfigurationFromWifiManager();
 
@@ -180,6 +190,8 @@ bool IoTBase::begin() {
  */
 void IoTBase::loop() {
     _recordWifiQuality();
+    // process (web portal)
+    wifiManager.process();
 }
 
 /** 

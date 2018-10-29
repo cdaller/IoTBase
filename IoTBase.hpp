@@ -1,6 +1,9 @@
 #ifndef IoTBase_h
 #define IoTBase_h
 
+//#define WM_MDNS // see WifiManager
+//#define WM_RTC  // see WifiManager
+
 #include "debug.hpp"
 
 #include <FS.h>                   //this needs to be first, or it all crashes and burns...
@@ -96,7 +99,8 @@ class IoTBase {
         bool isWifiConnected();
 
     private:
-        
+        WiFiManager wifiManager;
+
         static void _saveWifiManagerConfigCallback();
         
         void checkResetReason();
