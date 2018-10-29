@@ -1,0 +1,21 @@
+{
+    "name": "IoTBase",
+    "keywords": "wifimanager, iot, mqtt",
+    "description": "Easy setup for IoT projects",
+    "authors":
+    {
+        "name": "Christof Dallermassl"
+    },
+    "version": "1.0.0",
+    "frameworks": "arduino",
+    "platforms": "espressif32",
+    "dependencies": {
+        "WifiManager": "https://github.com/tzapu/WiFiManager.git#development",
+        "ArduinoJson": "5.13.2",
+        "NtpClientLib": "2.5.1"
+    },
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/cdaller/IoTBase.git"
+    }
+}
