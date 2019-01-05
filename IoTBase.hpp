@@ -14,6 +14,7 @@
 #undef min
 #undef max
 
+#include "Wifi.h"
 #include <WifiManager.h>
 
 #include <rom/rtc.h>
@@ -78,7 +79,7 @@ class IoTBase {
         ~IoTBase() = default;
 
         void readConfiguration();
-        bool begin();
+        bool begin(char* hostname);
         void loop();
 
         void restartWithConfigurationPortal();

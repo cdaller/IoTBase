@@ -108,7 +108,7 @@ void IoTBase::updateConfigurationFromWifiManager() {
     }
 };
 
-bool IoTBase::begin() {
+bool IoTBase::begin(char* hostname) {
 
     // not working reliable, so disable it at the moment: 
     //checkResetReason();
@@ -155,6 +155,7 @@ bool IoTBase::begin() {
         wifiManager.startConfigPortal();
     } else {
         preferences.end();
+        WiFi.setHostname(hostname);
         DEBUG_PRINTLN(F("starting autoconnect mode"));
         wifiManager.autoConnect();
     }
