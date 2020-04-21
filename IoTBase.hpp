@@ -94,8 +94,6 @@ class IoTBase {
         // helper methods for json parsing:
         float parseJson(char* jsonString, char *jsonPath);
 
-        boolean isSummerTime();
-
         uint8_t getWifiQuality();
         bool isWifiConnected();
 

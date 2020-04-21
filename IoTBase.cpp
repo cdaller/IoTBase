@@ -4,15 +4,14 @@
  */
 
 #define DEBUG 1
-#define TIME_ZONE 1
-#define TIME_ZONE_MINUTES 0
+#define TIME_GMT_OFFSET_SECS 3600
+#define TIME_DAYLIGHT_OFFSET_SEC 3600
 
 #include "IoTBase.hpp"
 
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager
 
-#include <TimeLib.h>
-#include <NtpClientLib.h>
+#include "time.h"
 
 
 // global variable, cannot use class variable :-(
@@ -156,6 +155,7 @@ bool IoTBase::begin(char* hostname) {
     } else {
         preferences.end();
         WiFi.setHostname(hostname);
+        WiFi.setSleep(false); // may prevent lots of disconnects??
         DEBUG_PRINTLN(F("starting autoconnect mode"));
         wifiManager.autoConnect();
     }
@@ -164,7 +164,6 @@ bool IoTBase::begin(char* hostname) {
     DEBUG_PRINTLN("connected...yeey :)");
     wifiManager.startWebPortal();
 
-    
     updateConfigurationFromWifiManager();
 
     writeConfiguration();
@@ -172,7 +171,8 @@ bool IoTBase::begin(char* hostname) {
     Serial.print("local ip: ");
     DEBUG_PRINTLN(WiFi.localIP());
 
-    NTP.begin ("europe.pool.ntp.org", TIME_ZONE, true, TIME_ZONE_MINUTES);
+    // Init and get the time
+    configTime(TIME_GMT_OFFSET_SECS, TIME_DAYLIGHT_OFFSET_SEC, "europe.pool.ntp.org");
 
     #ifdef DEBUG
         Serial.println("DEBUG is on in IoTBase");
@@ -312,12 +312,15 @@ void IoTBase::restartWithConfigurationPortal() {
 
 //callback notifying us of the need to save config
 void IoTBase::_saveWifiManagerConfigCallback() {
-    DEBUG_PRINTLN("Should save config");
+    DEBUG_PRINTLN("Save config callback");
     shouldSaveWifiManagerConfig = true;
 };
 
-boolean IoTBase::isSummerTime() {
-    return NTP.isSummerTime();
+void IoTBase::_saveWifiManagerParamsCallback() {
+    DEBUG_PRINTLN("Save param callback");
+    shouldSaveWifiManagerConfig = true;
+    // FIXME: should write configuration here, but cannot get instance of IoTBase :-(
+    //writeConfiguration();
 }
 
 String IoTBase::_getResetReason(RESET_REASON reason)

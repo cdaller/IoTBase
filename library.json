@@ -11,8 +11,7 @@
     "platforms": "espressif32",
     "dependencies": {
         "WifiManager": "https://github.com/tzapu/WiFiManager.git#development",
-        "ArduinoJson": "5.13.2",
-        "NtpClientLib": "2.5.1"
+        "ArduinoJson": "5.13.2"
     },
     "repository": {
     "type": "git",
