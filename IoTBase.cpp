@@ -172,7 +172,7 @@ bool IoTBase::begin(char* hostname) {
     DEBUG_PRINTLN(WiFi.localIP());
 
     // Init and get the time
-    configTime(TIME_GMT_OFFSET_SECS, TIME_DAYLIGHT_OFFSET_SEC, "europe.pool.ntp.org");
+    configTime(TIME_GMT_OFFSET_SECS, TIME_DAYLIGHT_OFFSET_SEC, "pool.ntp.org");
 
     #ifdef DEBUG
         Serial.println("DEBUG is on in IoTBase");
